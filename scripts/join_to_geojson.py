@@ -43,9 +43,13 @@ for p in a.firms_csvs:
         occ = feat["properties"].setdefault("occupants", {})
         if isinstance(occ, str):
             occ = json.loads(occ); feat["properties"]["occupants"] = occ
-        occ.setdefault(str(y), []).append(dict(firm=r.firm, trade=r.trade, match=r.match))
+        lst = occ.setdefault(str(y), [])
+        key = lambda n: re.sub(r"[^a-z]", "", str(n).lower())[:6]
+        if any(key(o["firm"]) == key(r.firm) for o in lst):   # hand-entered stub row already covers it
+            continue
+        lst.append(dict(firm=str(r.firm), trade=("" if pd.isna(r.trade) else str(r.trade)), match=str(r.match)))
 
-json.dump(stub, open(a.out, "w"), indent=1)
+json.dump(stub, open(a.out, "w"), indent=1, allow_nan=False)
 with open(a.unanchored, "w", newline="") as f:
     w = csv.DictWriter(f, fieldnames=["year", "street", "house_no", "firm", "trade", "match"])
     w.writeheader(); w.writerows(un)

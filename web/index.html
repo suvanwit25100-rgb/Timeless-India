@@ -20,73 +20,73 @@
   </nav>
 </header>
 
-<section class="hero">
-  <div class="hero-inner">
-    <div class="hero-eyebrow">A Digital Humanities project · IIIT Naya Raipur · 1850–1947</div>
-    <h1>The city under the city.</h1>
-    <p class="tagline">Click any building on a colonial Calcutta street — Chowringhee in 1897, Clive in 1915, Bowbazar in 1940 — and see who occupied it, what shop stood there, and what the archive chose not to record.</p>
-    <div class="cta">
-      <a class="btn" href="map.html">Open the map</a>
-      <a class="btn ghost" href="argument.html">Read the argument</a>
-    </div>
-  </div>
+<!-- The hero: static, centred, shown whole. Nothing is placed over it. -->
+<section class="hero-stage">
+  <img src="assets/kolkata-hero.webp" alt="KOLKATA — the Victoria Memorial reflected in its pool beneath stormy clouds">
+  <p class="hero-cap">Calcutta &nbsp;·&nbsp; 1850 – 1947</p>
 </section>
 
 <main class="page">
 
-  <p class="lead">A palimpsest is a page scraped clean and written over. This project treats colonial Calcutta the same way: Thacker's directories, Survey of India sheets, photos from Bourne &amp; Shepherd, and the memories of present-day shopkeepers are all layers over the same streets. We show each layer, and the gaps between them.</p>
-
-  <div class="stats">
-    <div class="stat"><div class="n">1 166</div><div class="k">Firms parsed · 1915</div></div>
-    <div class="stat"><div class="n">513</div><div class="k">White Town firms</div></div>
-    <div class="stat"><div class="n">61</div><div class="k">Black Town firms</div></div>
-    <div class="stat"><div class="n">8.4×</div><div class="k">Archival bias</div></div>
+  <div class="eyebrow">A Digital Humanities project &nbsp;·&nbsp; IIIT Naya Raipur</div>
+  <h1 class="glass-title">The city under the city</h1>
+  <p class="lead">A palimpsest is a page scraped clean and written over. Colonial Calcutta is one: Thacker's directories, survey sheets, studio photographs and the memories of today's shopkeepers are all layers on the same streets. Click a building and see who held it in 1897, 1915 or 1940 — and what the archive chose not to record.</p>
+  <div class="cta">
+    <a class="btn" href="map.html">Open the map</a>
+    <a class="btn ghost" href="argument.html">Read the argument</a>
   </div>
 
-  <h2>What this project does</h2>
+  <div class="stats">
+    <div class="stat"><div class="n">1,166</div><div class="k">Firms parsed · 1915</div></div>
+    <div class="stat"><div class="n">513</div><div class="k">White Town</div></div>
+    <div class="stat"><div class="n">61</div><div class="k">Black Town</div></div>
+    <div class="stat"><div class="n">8·4 : 1</div><div class="k">The archival gap</div></div>
+  </div>
+
+  <h2>The Project</h2>
   <div class="cards">
     <a class="card" href="map.html">
-      <h3>The interactive map</h3>
-      <p>MapLibre + year slider from 1850 to 1947. Click a pin to see occupants per year with a confidence pill for every fuzzy match.</p>
+      <h3>The Map</h3>
+      <p>A year slider from 1850 to 1947. Click any pin to read its occupants, each marked exact, fuzzy or unmatched.</p>
       <span class="more">Open the map →</span>
     </a>
     <a class="card" href="firms.html">
-      <h3>The firm directory</h3>
-      <p>Every one of the 1 166 firms we lifted from Thacker's 1915, searchable by street, house or trade. Each row shows match confidence.</p>
-      <span class="more">Browse firms →</span>
+      <h3>The Firms</h3>
+      <p>All 1,166 firms lifted from Thacker's 1915 Calcutta listing — searchable by name, street, trade or house number.</p>
+      <span class="more">Browse the directory →</span>
     </a>
     <a class="card" href="argument.html">
-      <h3>The archival argument</h3>
-      <p>Why Clive Street has 109 entries and Kumartuli has none. A short data-story about what the colonial archive saw — and refused to see.</p>
+      <h3>The Argument</h3>
+      <p>Why Clive Street has 109 entries and Kumartuli has none: what the colonial archive saw, and what it left out.</p>
       <span class="more">Read the argument →</span>
     </a>
     <a class="card" href="method.html">
-      <h3>Pipeline &amp; method</h3>
-      <p>From archive.org page images through column-split Tesseract, a fault-tolerant parser, a street gazetteer, and human-in-the-loop verification.</p>
+      <h3>The Method</h3>
+      <p>From a page scan to a building pin: column-split OCR, a tolerant parser, a street gazetteer, and a human check.</p>
       <span class="more">See the method →</span>
     </a>
     <a class="card" href="about.html#ethics">
-      <h3>Ethics &amp; consent</h3>
-      <p>CARE-style oral-history consent, right to withdraw, and a refusal to publish what speakers consider private — even if the tape caught it.</p>
-      <span class="more">Read our ethics →</span>
+      <h3>The Ethics</h3>
+      <p>Consent, the right to withdraw, and a refusal to publish what speakers hold private — even when the tape caught it.</p>
+      <span class="more">Read our rules →</span>
     </a>
     <a class="card" href="about.html#sources">
-      <h3>Sources</h3>
-      <p>Thacker's 1915 / 1920 / 1938, Bengal Directory 1884, Scott &amp; Co. 1849, Survey of India sheets, Scroll.in reportage — all in one page, cited.</p>
-      <span class="more">See sources →</span>
+      <h3>The Sources</h3>
+      <p>Thacker's 1915, 1920, 1938; the Bengal Directory; Scott &amp; Co. 1849; survey sheets — all cited in one place.</p>
+      <span class="more">See the sources →</span>
     </a>
   </div>
 
-  <h2>Try one address</h2>
+  <h2>One Address</h2>
   <div class="aside">
-    <strong>22 Chowringhee Road, 1915.</strong> Johnston &amp; Hoffmann — photographers to His Majesty the King — share the number with Rai Budree Das Bahadoor &amp; Sons, court jewellers. The directory lists both in the same paragraph. Click through to the map to see where the building would have stood.
+    <strong>22 Chowringhee Road, 1915.</strong> Johnston &amp; Hoffmann — photographers to His Majesty the King — share the number with Rai Budree Das Bahadoor &amp; Sons, court jewellers. The directory prints both in the same column.
   </div>
 
 </main>
 
 <footer>
-  <div>Kolkata Palimpsest · built by Suvanwit Mandal, B.Tech CSE, IIIT Naya Raipur · 2026</div>
-  <div class="fine">Sources are listed in full on the <a href="about.html#sources">About</a> page. Images from the colonial era are in the public domain. The project's own data is CC-BY 4.0.</div>
+  <div>Kolkata Palimpsest &nbsp;·&nbsp; Suvanwit Mandal &nbsp;·&nbsp; B.Tech CSE, IIIT Naya Raipur &nbsp;·&nbsp; 2026</div>
+  <div class="fine">Colonial-era images and directory entries are in the public domain. The project's own data is released CC-BY 4.0.</div>
 </footer>
 
 </body>

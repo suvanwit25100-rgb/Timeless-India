@@ -6,15 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="assets/style.css">
   <style>
-    .filters { display: flex; gap: 1em; flex-wrap: wrap; align-items: center; margin: 1em 0 1.5em; }
-    .filters input, .filters select { font-family: 'EB Garamond', serif; font-size: 1em; padding: .4em .6em; border: 1px solid var(--rule); background: #fff8e8; }
-    .count { font-family: 'Oswald', sans-serif; font-size: .85em; color: var(--sepia-700); letter-spacing: .1em; text-transform: uppercase; margin-left: auto; }
-    td.firm { font-family: 'Cormorant Garamond', serif; font-size: 1.06em; color: var(--sepia-700); }
-    td.trade { color: var(--ink-soft); font-size: .92em; max-width: 36ch; }
+    .filters { display: flex; gap: 1em; flex-wrap: wrap; align-items: center; margin: 1em 0 1.5em; padding: 1em 1.2em; }
+    .count { font-family: var(--serif-sc); font-size: .8em; color: var(--ink-soft); letter-spacing: .18em; text-transform: uppercase; margin-left: auto; }
+    td.firm { font-family: var(--serif); font-size: 1.04em; color: var(--paper); }
+    td.trade { color: var(--ink-soft); font-size: .9em; max-width: 36ch; }
     td.hn { font-variant-numeric: tabular-nums; }
-    tr.hide { display: none; }
-    .pagebar { display: flex; justify-content: center; gap: .6em; margin: 1.5em 0 0; }
-    .pagebar button { font-family: 'Oswald', sans-serif; font-size: .78em; letter-spacing: .1em; text-transform: uppercase; padding: .5em 1em; border: 1px solid var(--sepia-700); background: transparent; color: var(--sepia-700); cursor: pointer; }
+    .tablewrap { overflow-x: auto; }
+    .pagebar { display: flex; justify-content: center; align-items: center; gap: 1em; margin: 1.5em 0 0; }
+    .pagebar button { font-family: var(--serif-sc); font-size: .78em; letter-spacing: .2em; text-transform: uppercase; padding: .6em 1.3em; border: 1px solid var(--hair-strong); background: rgba(255,255,255,.06); color: var(--paper); cursor: pointer; }
+    .pagebar button:hover:not(:disabled) { background: var(--paper); color: #000; }
     .pagebar button:disabled { opacity: .3; cursor: default; }
   </style>
 </head>
@@ -33,10 +33,10 @@
 </header>
 
 <main class="page wide">
-  <h1>The 1915 firm directory</h1>
+  <h1 class="glass-title sm">The 1915 Firm Directory</h1>
   <p class="lead">Every firm we lifted from Thacker's Indian Directory, 1915 Calcutta section. Search by name, street, trade, or house number. Confidence pills show whether the street match is exact, a fuzzy OCR recovery, or still unmatched.</p>
 
-  <div class="filters">
+  <div class="filters glass">
     <input id="q" placeholder="Search firm, trade, street, house…" style="flex:1; min-width:260px;">
     <select id="town">
       <option value="">All towns</option>
@@ -53,16 +53,16 @@
     <span class="count" id="count">— rows</span>
   </div>
 
-  <table class="ledger">
+  <div class="tablewrap"><table class="ledger">
     <thead><tr>
       <th>Firm</th><th>House</th><th>Street</th><th>Match</th><th>Town</th><th>Trade</th>
     </tr></thead>
     <tbody id="body"></tbody>
-  </table>
+  </table></div>
 
   <div class="pagebar">
     <button id="prev">← Prev</button>
-    <span id="pageinfo" style="align-self:center;font-family:'Oswald',sans-serif;font-size:.8em;letter-spacing:.1em;"></span>
+    <span id="pageinfo" style="font-family:var(--serif-sc);font-size:.8em;letter-spacing:.16em;color:var(--ink-soft);"></span>
     <button id="next">Next →</button>
   </div>
 </main>

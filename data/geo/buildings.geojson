@@ -29,16 +29,6 @@
        "firm": "BISWAS, K. C., & CO",
        "trade": "gun-makers a sporting goods, fishing tackle and taxidermists",
        "match": "fuzzy"
-      },
-      {
-       "firm": "BRISTOL HOTEL",
-       "trade": NaN,
-       "match": "fuzzy"
-      },
-      {
-       "firm": "SEN & SEN",
-       "trade": "90-3, Harrison rd. Bon.\u20149, Nat talking machines, fancy goods, cycles, &",
-       "match": "exact"
       }
      ]
     }
@@ -99,16 +89,6 @@
        "firm": "Rai Budree Das Bahadoor & Sons",
        "trade": "jewellers",
        "match": "fuzzy"
-      },
-      {
-       "firm": "JOHNSTON & HOFFMANN",
-       "trade": "Sore Prorr.\u2014T. J. Hoffmann. Manar.\u2014A. 8. H. David and others. LONDON CORRESPDTS.\u2014 Wo. 375",
-       "match": "exact"
-      },
-      {
-       "firm": "RAI BUDREE DAS BAHADOOR & SONS",
-       "trade": "court jewellers, precious stone merchts. and bankers. Prnxs. Kumar Sing and Raj Kumar Sing",
-       "match": "exact"
       }
      ]
     }
@@ -172,13 +152,8 @@
        "match": "exact"
       },
       {
-       "firm": "BRAITHWAITE AND KIRK",
-       "trade": "Works\u201421, Crariten WorKks\u2014Wast Bromwich and 36, Lime st., London, BE C.and Dui ham, engrs.",
-       "match": "exact"
-      },
-      {
        "firm": "CO., LD. Hp. OFrice\u2014Liverpool OarrraL\u2014 . AGENTS\u2014Gillanders, Arbuthnot & Co",
-       "trade": NaN,
+       "trade": "",
        "match": "fuzzy"
       },
       {
@@ -208,7 +183,7 @@
       },
       {
        "firm": "KOOH, MARCUS, & CO., F. Block\u2014Clive Bldgs",
-       "trade": NaN,
+       "trade": "",
        "match": "exact"
       },
       {
@@ -330,11 +305,6 @@
       {
        "firm": "Biswas, S., & Bros.",
        "trade": "booksellers",
-       "match": "exact"
-      },
-      {
-       "firm": "BISWAS, 8., & BROS",
-       "trade": "booksellers, |",
        "match": "exact"
       }
      ]
