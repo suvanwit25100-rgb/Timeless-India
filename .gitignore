@@ -1,0 +1,7 @@
+.DS_Store
+.claude/settings.local.json
+__pycache__/
+*.pyc
+data/raw/in.ernet.dli.2015.97228/pages/
+data/raw/thackers_1915/pages/
+data/raw/thackers_1915/*djvu.txt

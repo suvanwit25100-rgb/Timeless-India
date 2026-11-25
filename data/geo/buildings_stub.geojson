@@ -1,0 +1,19 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "note": "Hand-placed anchor points for a few known 1915 addresses, for UI prototyping only. Not surveyed footprints. Replace with GeoJSON traced off a georeferenced Simms 1847-49 or Survey of India sheet in QGIS/Allmaps.",
+    "crs": "EPSG:4326",
+    "source": "approximate present-day coordinates from OpenStreetMap"
+  },
+  "features": [
+    {"type": "Feature", "properties": {"id": "chowringhee-1", "street": "Chowringhee Road", "house_no": "1", "town": "White", "occupants": {"1915": [{"firm": "Bristol Hotel", "trade": "hotel", "match": "exact"}, {"firm": "Sen & Sen", "trade": "sporting goods", "match": "exact"}]}}, "geometry": {"type": "Point", "coordinates": [88.3503, 22.5631]}},
+    {"type": "Feature", "properties": {"id": "chowringhee-11", "street": "Chowringhee Road", "house_no": "11", "town": "White", "occupants": {"1915": [{"firm": "Boyes & Collis", "trade": "dental surgeons", "match": "exact"}, {"firm": "Framjee & Sons", "trade": "wine and genl. purveyors", "match": "fuzzy"}]}}, "geometry": {"type": "Point", "coordinates": [88.3509, 22.5602]}},
+    {"type": "Feature", "properties": {"id": "chowringhee-22", "street": "Chowringhee Road", "house_no": "22", "town": "White", "occupants": {"1915": [{"firm": "Johnston & Hoffmann", "trade": "photographers to H.M. the King", "match": "exact"}, {"firm": "Rai Budree Das Bahadoor & Sons", "trade": "jewellers", "match": "fuzzy"}]}}, "geometry": {"type": "Point", "coordinates": [88.3516, 22.5555]}},
+    {"type": "Feature", "properties": {"id": "chowringhee-4-7", "street": "Chowringhee Road", "house_no": "4-7", "town": "White", "occupants": {"1897": [{"firm": "Whiteaway, Laidlaw & Co.", "trade": "general drapers", "match": "exact", "source": "Scroll.in 1090878"}]}}, "geometry": {"type": "Point", "coordinates": [88.3504, 22.5617]}},
+    {"type": "Feature", "properties": {"id": "clive-8", "street": "Clive Street", "house_no": "8", "town": "White", "occupants": {"1915": [{"firm": "Braithwaite and Kirk", "trade": "structural & mechanical engineers", "match": "exact"}]}}, "geometry": {"type": "Point", "coordinates": [88.3488, 22.5712]}},
+    {"type": "Feature", "properties": {"id": "bowbazar-40", "street": "Bowbazar Street", "house_no": "40", "town": "shared", "occupants": {"1915": [{"firm": "Nundo Lall Mullick & Bros.", "trade": "furniture (est. 1863)", "match": "exact"}]}}, "geometry": {"type": "Point", "coordinates": [88.3615, 22.5665]}},
+    {"type": "Feature", "properties": {"id": "bowbazar-49", "street": "Bowbazar Street", "house_no": "49", "town": "shared", "occupants": {"1915": [{"firm": "Choudhry, Burdhun & Co.", "trade": "furniture (est. 1848)", "match": "exact"}]}}, "geometry": {"type": "Point", "coordinates": [88.3619, 22.5667]}},
+    {"type": "Feature", "properties": {"id": "kansaripara-104", "street": "Kansaripara Road", "house_no": "104", "town": "Black", "occupants": {"1915": [{"firm": "Biswas, Pulin Behari", "trade": "plater, badge maker, engraver", "match": "exact", "note": "Black Town listing - rare"}]}}, "geometry": {"type": "Point", "coordinates": [88.3418, 22.5309]}},
+    {"type": "Feature", "properties": {"id": "upper-chitpore-231", "street": "Upper Chitpore Road", "house_no": "231", "town": "Black", "occupants": {"1915": [{"firm": "Biswas, S., & Bros.", "trade": "booksellers", "match": "exact"}]}}, "geometry": {"type": "Point", "coordinates": [88.3625, 22.5947]}}
+  ]
+}

@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Kolkata Palimpsest - Colonial Calcutta Street by Street</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+  <style>
+    html, body { margin:0; height:100%; font-family: Georgia, serif; color:#1a1a1a; }
+    #map { position:absolute; top:0; bottom:0; left:0; right:360px; }
+    #side { position:absolute; top:0; right:0; bottom:0; width:360px; padding:1em; overflow:auto; background:#faf6ef; border-left:1px solid #c7b299; box-sizing:border-box; }
+    h1 { font-size:1.1em; margin:0 0 .2em; }
+    .sub { color:#6a5e4a; font-size:.85em; margin-bottom:1em; }
+    .pill { display:inline-block; padding:1px 6px; border-radius:10px; font-size:.7em; background:#eee; color:#333; margin-left:4px; }
+    .pill.Black { background:#3b2a24; color:#f6e5c9; }
+    .pill.White { background:#d8c9ad; }
+    .pill.shared { background:#a6b89a; color:#fff; }
+    .pill.fuzzy { background:#f0c674; }
+    .pill.unmatched { background:#d35f5f; color:#fff; }
+    .slider-row { display:flex; align-items:center; gap:.5em; margin:.5em 0 1em; }
+    .year { font-weight:bold; font-size:1.1em; min-width:3em; }
+    .firm { margin:.4em 0 .8em; }
+    .firm b { display:block; }
+    .firm small { color:#6a5e4a; }
+    #ethics { font-size:.75em; color:#6a5e4a; border-top:1px solid #d7c7ab; padding-top:.7em; margin-top:1em; }
+    .legend { font-size:.75em; margin:.5em 0; }
+    .legend span { display:inline-block; width:10px; height:10px; border-radius:5px; vertical-align:middle; margin-right:3px; }
+  </style>
+</head>
+<body>
+<div id="map"></div>
+<div id="side">
+  <h1>Kolkata Palimpsest</h1>
+  <div class="sub">Colonial Calcutta, street by street - 1850 to 1947</div>
+  <div class="slider-row">
+    <span class="year" id="y">1915</span>
+    <input type="range" id="slider" min="1850" max="1947" step="1" value="1915" style="flex:1">
+  </div>
+  <div class="legend">
+    <span style="background:#a76a3a"></span> White Town &nbsp;
+    <span style="background:#3b2a24"></span> Black Town &nbsp;
+    <span style="background:#7a8d6a"></span> shared
+  </div>
+  <div id="panel"><em>Click a building marker to see its occupants.</em></div>
+  <div id="ethics">
+    Data comes from Thacker's Indian Directory (1915, OCR+parse, human verified). The colonial archive mostly recorded European firms; most Indian residents and shops are missing. Matches marked <span class="pill fuzzy">fuzzy</span> or <span class="pill unmatched">unmatched</span> are candidates, not certain fact.
+  </div>
+</div>
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script>
+const map = new maplibregl.Map({
+  container: 'map',
+  style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+  center: [88.355, 22.568], zoom: 13.2
+});
+const colorFor = t => ({White:'#a76a3a', Black:'#3b2a24', shared:'#7a8d6a'}[t]||'#666');
+let data;
+fetch('../data/geo/buildings_stub.geojson').then(r=>r.json()).then(j=>{
+  data = j;
+  map.on('load', () => {
+    map.addSource('bldgs', {type:'geojson', data:j});
+    map.addLayer({id:'bldgs', type:'circle', source:'bldgs',
+      paint:{'circle-radius':7,
+             'circle-color':['match',['get','town'],'White','#a76a3a','Black','#3b2a24','shared','#7a8d6a','#666'],
+             'circle-stroke-color':'#fff','circle-stroke-width':1.5}});
+    map.on('click','bldgs', e => show(e.features[0].properties));
+    map.on('mouseenter','bldgs',()=>map.getCanvas().style.cursor='pointer');
+    map.on('mouseleave','bldgs',()=>map.getCanvas().style.cursor='');
+  });
+});
+const slider = document.getElementById('slider'), yLbl = document.getElementById('y');
+slider.oninput = () => { yLbl.textContent = slider.value; if (currentFeat) show(currentFeat); };
+let currentFeat;
+function show(props){
+  currentFeat = props;
+  const occ = typeof props.occupants === 'string' ? JSON.parse(props.occupants) : props.occupants;
+  const years = Object.keys(occ).map(Number).sort();
+  // pick year nearest and not greater than slider
+  const y = +slider.value;
+  const nearest = years.filter(x=>x<=y).pop() ?? years[0];
+  let h = `<h1>${props.street} #${props.house_no}<span class="pill ${props.town}">${props.town} Town</span></h1>`;
+  h += `<div class="sub">Shown year: ${nearest} &middot; Available: ${years.join(', ')}</div>`;
+  for (const f of (occ[nearest]||[])){
+    h += `<div class="firm"><b>${f.firm}</b>`;
+    if (f.match) h += ` <span class="pill ${f.match}">${f.match}</span>`;
+    h += `<br><small>${f.trade||''}${f.note? ' - '+f.note:''}${f.source? ' (src: '+f.source+')':''}</small></div>`;
+  }
+  if (!(occ[nearest]||[]).length) h += `<p><em>No listing for this year.</em></p>`;
+  document.getElementById('panel').innerHTML = h;
+}
+</script>
+</body>
+</html>

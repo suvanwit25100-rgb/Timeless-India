@@ -1,0 +1,13 @@
+year,source_page,firm,trade,house_no,street,address_status,extracted_house_no,extracted_street,verified_by,notes
+1915,li,United Bank of Commerce Ltd.,bank,101-1,Clive Street,current,101-1,Clive Street,manual,Telegraphic "CAUTIOUS"; Post Box 109
+1915,lii,H. C. Dutt,sanitary engineer,2,Lall Bazar Street,current,2,Lall Bazar Street,manual,Tele "Cuprite"
+1915,lii,Kolley & Co.,"architects, engineers, builders",,Old Court House Street,current,,,manual,Grosvenor House; no house no.; MISSED by extractor
+1915,lii,Dey & Ghose,"booksellers, publishers",5-6-7,Madan Gopal Lane,current,"5,6&7",Madan Gopal Lane,manual,P.O. Bowbazar
+1915,liv,G. Knowles & Co.,manufacturers' agents,32,Jackson Lane,current,31,Jackson Lane,manual,OCR misread 32->31 (small print); street fuzzy-matched from "Jnokven"
+1915,liv,G. Knowles & Co.,manufacturers' agents,32,Jackson Lane,current,32,Jackson Lane,manual,Tel. 474
+1915,xxiii,Dey & Co.,picture framers,212,Corporation Street,current,212,Corporation Street,manual,Est. 1860 (OCR read 1660)
+1915,xxiii,Dey & Co.,picture framers,2,Chowringhee Road,former,2,Chowringhee Road,manual,"""Late of"" - relocation evidence"
+1915,xxiii,Calcutta Paint Colour & Varnish Works,paint manufacturer (workshop),10,Jorabagan Street,current,10,Jorabagan Street,manual,
+1915,xxiii,Calcutta Paint Colour & Varnish Works,paint manufacturer (office),42,Clive Street,current,42,Clive Street,manual,
+1915,xxiv,"Choudhry, Burdhun & Co.",furniture,49,Bowbazar Street,current,49,Bowbazar Street,manual,Estd. 1848
+1915,xxiv,Nundo Lall Mullick & Brothers,cabinet makers & timber merchants,40,Bowbazar Street,current,49,Bowbazar Street,manual,OCR misread 40->49; street fuzzy-matched from "Sew Sazar"; Estd. 1863

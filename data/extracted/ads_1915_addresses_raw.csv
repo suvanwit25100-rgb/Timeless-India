@@ -1,0 +1,12 @@
+page_img,house_no,street,match,status,context
+ads_p_li-lii.txt,101-1,Clive Street,exact,current,"101-1, CLIVE STREET,"
+ads_p_li-lii.txt,2,Lall Bazar Street,exact,current,"2, Lall Bazar Street, CALCUTTA."
+ads_p_li-lii.txt,"5,6&7",Madan Gopal Lane,exact,current,"5, 6 & 7, Madan Gopal Lane, CALCUTTA,"
+ads_p_liii-liv.txt,31,Jackson Lane,fuzzy,current,"G@. KNOWLES & O0., 31 Jnokven Lane,"
+ads_p_liii-liv.txt,32,Jackson Lane,exact,current,"| ‘32, Jackson Lane, Calcutta."
+ads_p_xxiii-xxiv.txt,212,Corporation Street,exact,current,"212, Corporation Street, CALCUTTA,"
+ads_p_xxiii-xxiv.txt,2,Chowringhee Road,fuzzy,former,sate of 2 Chowringhes Road. Eatablished 1660.
+ads_p_xxiii-xxiv.txt,10,Jorabagan Street,exact,current,"Workshop: —10. Jorabagan Street, CALCUTTA."
+ads_p_xxiii-xxiv.txt,42,Clive Street,exact,current,"Office :--42,-Clive Street, CALCUTTA."
+ads_p_xxiii-xxiv.txt,49,Bowbazar Street,exact,current,"49, Bow Bazar Street, CALCUTTA."
+ads_p_xxiii-xxiv.txt,49,Bowbazar Street,fuzzy,current,"49, Sew Sazar Street, CALCUTTA,"
