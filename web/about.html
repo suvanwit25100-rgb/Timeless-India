@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>About — Kolkata Palimpsest</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="top">
+  <a href="index.html" class="brand">Kolkata Palimpsest</a>
+  <nav class="top-nav">
+    <a href="index.html">Home</a>
+    <a href="map.html">Map</a>
+    <a href="firms.html">Firms</a>
+    <a href="argument.html">Argument</a>
+    <a href="method.html">Method</a>
+    <a href="about.html" aria-current="page">About</a>
+  </nav>
+</header>
+
+<main class="page">
+
+  <h1>About the project</h1>
+  <p class="lead">Kolkata Palimpsest is a minor project for the Digital Humanities minor stream at the Indian Institute of Information Technology, Naya Raipur. It traces the shops, buildings, roads and gullies of colonial Calcutta between 1850 and 1947 and preserves them as an interactive, metadata-rich digital archive.</p>
+
+  <h2>Who</h2>
+  <p>Built by <strong>Suvanwit Mandal</strong>, B.Tech CSE, IIIT Naya Raipur. Advised by the DH minor faculty. The engineering was paired with Claude, an AI assistant, which helped build the OCR pipeline and the site; every row in the data was reviewed by a human before publication.</p>
+
+  <h2 id="sources">Sources</h2>
+  <table class="ledger">
+    <thead><tr><th>Source</th><th>Date</th><th>Where</th></tr></thead>
+    <tbody>
+      <tr><td>Thacker's Indian Directory (Calcutta firms)</td><td>1915</td><td><a href="https://archive.org/details/in.ernet.dli.2015.97228">archive.org · in.ernet.dli.2015.97228</a></td></tr>
+      <tr><td>Thacker's Indian Directory</td><td>1920</td><td><a href="https://archive.org/details/in.ernet.dli.2015.97229">archive.org · 97229</a></td></tr>
+      <tr><td>Thacker's Indian Directory</td><td>1938</td><td><a href="https://archive.org/details/in.ernet.dli.2015.109427">archive.org · 109427</a></td></tr>
+      <tr><td>Bengal Directory</td><td>1884</td><td><a href="https://archive.org/details/in.ernet.dli.2015.68582">archive.org · 68582</a></td></tr>
+      <tr><td>Bengal Directory</td><td>1855</td><td><a href="https://archive.org/details/in.ernet.dli.2015.93585">archive.org · 93585</a></td></tr>
+      <tr><td>Scott &amp; Co.'s Bengal Directory</td><td>1849</td><td><a href="http://hdl.handle.net/2027/hvd.32044088755111">HathiTrust</a></td></tr>
+      <tr><td>Thacker's Guide to Calcutta (Firminger)</td><td>1906</td><td><a href="https://archive.org/details/thackersguidetoc00firm">archive.org</a></td></tr>
+      <tr><td>FIBIS index of digitised directories</td><td>—</td><td><a href="https://wiki.fibis.org/w/Directories_online">wiki.fibis.org</a></td></tr>
+      <tr><td>Scroll.in — Whiteaway, Laidlaw at Chowringhee 4–7</td><td>2024</td><td><a href="https://scroll.in/article/1090878">article 1090878</a></td></tr>
+      <tr><td>Simms' survey of Calcutta</td><td>1847–49</td><td>David Rumsey · British Library</td></tr>
+      <tr><td>Survey of India sheets</td><td>various</td><td>archive.org · SoI</td></tr>
+      <tr><td>Colonial photographs (public domain)</td><td>1860s–1900s</td><td>Bourne &amp; Shepherd, Johnston &amp; Hoffmann</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="ethics">Ethics</h2>
+  <p>The colonial directories we rely on recorded European firms in detail and left most Indian residents and shops out. Taking them as the whole truth would reproduce that gap. The project follows five rules to avoid doing that:</p>
+  <ol>
+    <li>No uncertain data stated as fact. Rows marked <span class="pill fuzzy">fuzzy</span> or <span class="pill unmatched">unmatched</span> in the parser output stay marked all the way through the map UI.</li>
+    <li>The map's sidebar names the archive's limits in plain words — the viewer does not have to dig to find out.</li>
+    <li>CARE-style consent for oral history. A translator who speaks Bengali is present for every interview.</li>
+    <li>Right to withdraw. A speaker may ask for their clip to be removed from the map at any time; the audio file is then deleted.</li>
+    <li>No commercial-sensitive detail — prices, suppliers, debts, family disputes — is published even when said on tape.</li>
+  </ol>
+  <p>The full consent form is in <a href="https://github.com/suvanwit25100-rgb/Timeless-India/blob/main/docs/ethics_and_consent.md"><code>docs/ethics_and_consent.md</code></a>.</p>
+
+  <h2>Licence</h2>
+  <p>Pre-1947 photographs and directory entries are in the public domain. The project's own code is under the MIT licence; the gazetteer, extracted CSVs and GeoJSON are released CC-BY 4.0 — attribute "Kolkata Palimpsest, Suvanwit Mandal, 2026".</p>
+
+  <h2>Get in touch</h2>
+  <p>Suvanwit Mandal · IIIT Naya Raipur · Digital Humanities minor · 2026.</p>
+
+</main>
+
+<footer>
+  Kolkata Palimpsest · built in Kolkata's memory.
+</footer>
+
+</body>
+</html>

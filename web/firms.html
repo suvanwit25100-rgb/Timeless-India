@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Firms — Kolkata Palimpsest</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .filters { display: flex; gap: 1em; flex-wrap: wrap; align-items: center; margin: 1em 0 1.5em; }
+    .filters input, .filters select { font-family: 'EB Garamond', serif; font-size: 1em; padding: .4em .6em; border: 1px solid var(--rule); background: #fff8e8; }
+    .count { font-family: 'Oswald', sans-serif; font-size: .85em; color: var(--sepia-700); letter-spacing: .1em; text-transform: uppercase; margin-left: auto; }
+    td.firm { font-family: 'Cormorant Garamond', serif; font-size: 1.06em; color: var(--sepia-700); }
+    td.trade { color: var(--ink-soft); font-size: .92em; max-width: 36ch; }
+    td.hn { font-variant-numeric: tabular-nums; }
+    tr.hide { display: none; }
+    .pagebar { display: flex; justify-content: center; gap: .6em; margin: 1.5em 0 0; }
+    .pagebar button { font-family: 'Oswald', sans-serif; font-size: .78em; letter-spacing: .1em; text-transform: uppercase; padding: .5em 1em; border: 1px solid var(--sepia-700); background: transparent; color: var(--sepia-700); cursor: pointer; }
+    .pagebar button:disabled { opacity: .3; cursor: default; }
+  </style>
+</head>
+<body>
+
+<header class="top">
+  <a href="index.html" class="brand">Kolkata Palimpsest</a>
+  <nav class="top-nav">
+    <a href="index.html">Home</a>
+    <a href="map.html">Map</a>
+    <a href="firms.html" aria-current="page">Firms</a>
+    <a href="argument.html">Argument</a>
+    <a href="method.html">Method</a>
+    <a href="about.html">About</a>
+  </nav>
+</header>
+
+<main class="page wide">
+  <h1>The 1915 firm directory</h1>
+  <p class="lead">Every firm we lifted from Thacker's Indian Directory, 1915 Calcutta section. Search by name, street, trade, or house number. Confidence pills show whether the street match is exact, a fuzzy OCR recovery, or still unmatched.</p>
+
+  <div class="filters">
+    <input id="q" placeholder="Search firm, trade, street, house…" style="flex:1; min-width:260px;">
+    <select id="town">
+      <option value="">All towns</option>
+      <option value="White">White Town</option>
+      <option value="Black">Black Town</option>
+      <option value="shared">Shared</option>
+    </select>
+    <select id="conf">
+      <option value="">All matches</option>
+      <option value="exact">Exact</option>
+      <option value="fuzzy">Fuzzy</option>
+      <option value="unmatched">Unmatched</option>
+    </select>
+    <span class="count" id="count">— rows</span>
+  </div>
+
+  <table class="ledger">
+    <thead><tr>
+      <th>Firm</th><th>House</th><th>Street</th><th>Match</th><th>Town</th><th>Trade</th>
+    </tr></thead>
+    <tbody id="body"></tbody>
+  </table>
+
+  <div class="pagebar">
+    <button id="prev">← Prev</button>
+    <span id="pageinfo" style="align-self:center;font-family:'Oswald',sans-serif;font-size:.8em;letter-spacing:.1em;"></span>
+    <button id="next">Next →</button>
+  </div>
+</main>
+
+<footer>
+  Data parsed from <a href="https://archive.org/details/in.ernet.dli.2015.97228">Thacker's Indian Directory 1915</a> via the pipeline described on the <a href="method.html">Method</a> page.
+</footer>
+
+<script>
+const TOWN = {
+  White: new Set(["Clive Street","Clive Row","Chowringhee Road","Dhurrumtollah Street","Old Court House Street","Mission Row","Dalhousie Square","Fairlie Place","Royal Exchange Place","Strand Road","Wellesley Street","Wellesley Place","Lyons Range","Mangoe Lane","Bentinck Street","Free School Street","Lindsay Street","Pollock Street","Hare Street","Hastings Street","Ezra Street","Park Street","Chowringhee Place","Lall Bazar Street","Lall Bazar","Mott's Lane","Radha Bazar Street","Radha Bazar","Royd Street"]),
+  Black: new Set(["Chitpur Road","Upper Chitpore Road","Lower Chitpore Road","Kansaripara Road","Kansareepara Road","Cornwallis Street","Jorabagan Street","Kumartuli Street","Amherst Street","Colootolla Street","Padma Nath Lane"]),
+};
+function townOf(s){ if(TOWN.White.has(s)) return "White"; if(TOWN.Black.has(s)) return "Black"; return "shared"; }
+
+let rows = [];
+let page = 0;
+const PAGE = 50;
+
+async function load(){
+  // Parse CSV with a tolerant tiny reader
+  const txt = await fetch('../data/extracted/firms_1915.csv').then(r=>r.text());
+  const lines = txt.split(/\r?\n/).filter(Boolean);
+  const head = parseLine(lines[0]);
+  rows = lines.slice(1).map(l => {
+    const o = {}; const cols = parseLine(l);
+    head.forEach((k,i) => o[k] = cols[i] ?? "");
+    o.town = townOf(o.street);
+    return o;
+  });
+  render();
+}
+function parseLine(l){
+  const out = []; let cur = ""; let q = false;
+  for (let i=0;i<l.length;i++){
+    const c = l[i];
+    if (q){
+      if (c === '"' && l[i+1] === '"'){ cur += '"'; i++; }
+      else if (c === '"') q = false;
+      else cur += c;
+    } else {
+      if (c === ','){ out.push(cur); cur = ""; }
+      else if (c === '"') q = true;
+      else cur += c;
+    }
+  }
+  out.push(cur); return out;
+}
+const esc = s => String(s??"").replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+
+function filtered(){
+  const q = document.getElementById('q').value.trim().toLowerCase();
+  const t = document.getElementById('town').value;
+  const c = document.getElementById('conf').value;
+  return rows.filter(r => {
+    if (t && r.town !== t) return false;
+    if (c && r.match !== c) return false;
+    if (q){
+      const hay = (r.firm+' '+r.trade+' '+r.street+' '+r.house_no).toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+}
+function render(){
+  const f = filtered();
+  document.getElementById('count').textContent = f.length.toLocaleString() + ' rows';
+  const pages = Math.max(1, Math.ceil(f.length / PAGE));
+  if (page >= pages) page = pages - 1;
+  const slice = f.slice(page*PAGE, (page+1)*PAGE);
+  document.getElementById('body').innerHTML = slice.map(r => `
+    <tr>
+      <td class="firm">${esc(r.firm)}</td>
+      <td class="hn">${esc(r.house_no)}</td>
+      <td>${esc(r.street)}</td>
+      <td><span class="pill ${r.match}">${esc(r.match)}</span></td>
+      <td><span class="pill ${r.town}">${r.town}</span></td>
+      <td class="trade">${esc(r.trade)}</td>
+    </tr>`).join('');
+  document.getElementById('pageinfo').textContent = `Page ${page+1} of ${pages}`;
+  document.getElementById('prev').disabled = page === 0;
+  document.getElementById('next').disabled = page >= pages - 1;
+}
+document.getElementById('q').oninput = () => { page = 0; render(); };
+document.getElementById('town').onchange = () => { page = 0; render(); };
+document.getElementById('conf').onchange = () => { page = 0; render(); };
+document.getElementById('prev').onclick = () => { if (page > 0){ page--; render(); window.scrollTo(0,0); } };
+document.getElementById('next').onclick = () => { page++; render(); window.scrollTo(0,0); };
+load();
+</script>
+</body>
+</html>

@@ -2,92 +2,92 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Kolkata Palimpsest - Colonial Calcutta Street by Street</title>
+  <title>Kolkata Palimpsest — Colonial Calcutta, street by street</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
-  <style>
-    html, body { margin:0; height:100%; font-family: Georgia, serif; color:#1a1a1a; }
-    #map { position:absolute; top:0; bottom:0; left:0; right:360px; }
-    #side { position:absolute; top:0; right:0; bottom:0; width:360px; padding:1em; overflow:auto; background:#faf6ef; border-left:1px solid #c7b299; box-sizing:border-box; }
-    h1 { font-size:1.1em; margin:0 0 .2em; }
-    .sub { color:#6a5e4a; font-size:.85em; margin-bottom:1em; }
-    .pill { display:inline-block; padding:1px 6px; border-radius:10px; font-size:.7em; background:#eee; color:#333; margin-left:4px; }
-    .pill.Black { background:#3b2a24; color:#f6e5c9; }
-    .pill.White { background:#d8c9ad; }
-    .pill.shared { background:#a6b89a; color:#fff; }
-    .pill.fuzzy { background:#f0c674; }
-    .pill.unmatched { background:#d35f5f; color:#fff; }
-    .slider-row { display:flex; align-items:center; gap:.5em; margin:.5em 0 1em; }
-    .year { font-weight:bold; font-size:1.1em; min-width:3em; }
-    .firm { margin:.4em 0 .8em; }
-    .firm b { display:block; }
-    .firm small { color:#6a5e4a; }
-    #ethics { font-size:.75em; color:#6a5e4a; border-top:1px solid #d7c7ab; padding-top:.7em; margin-top:1em; }
-    .legend { font-size:.75em; margin:.5em 0; }
-    .legend span { display:inline-block; width:10px; height:10px; border-radius:5px; vertical-align:middle; margin-right:3px; }
-  </style>
+  <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-<div id="map"></div>
-<div id="side">
-  <h1>Kolkata Palimpsest</h1>
-  <div class="sub">Colonial Calcutta, street by street - 1850 to 1947</div>
-  <div class="slider-row">
-    <span class="year" id="y">1915</span>
-    <input type="range" id="slider" min="1850" max="1947" step="1" value="1915" style="flex:1">
+
+<header class="top">
+  <a href="index.html" class="brand">Kolkata Palimpsest</a>
+  <nav class="top-nav">
+    <a href="index.html" aria-current="page">Home</a>
+    <a href="map.html">Map</a>
+    <a href="firms.html">Firms</a>
+    <a href="argument.html">Argument</a>
+    <a href="method.html">Method</a>
+    <a href="about.html">About</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">A Digital Humanities project · IIIT Naya Raipur · 1850–1947</div>
+    <h1>The city under the city.</h1>
+    <p class="tagline">Click any building on a colonial Calcutta street — Chowringhee in 1897, Clive in 1915, Bowbazar in 1940 — and see who occupied it, what shop stood there, and what the archive chose not to record.</p>
+    <div class="cta">
+      <a class="btn" href="map.html">Open the map</a>
+      <a class="btn ghost" href="argument.html">Read the argument</a>
+    </div>
   </div>
-  <div class="legend">
-    <span style="background:#a76a3a"></span> White Town &nbsp;
-    <span style="background:#3b2a24"></span> Black Town &nbsp;
-    <span style="background:#7a8d6a"></span> shared
+</section>
+
+<main class="page">
+
+  <p class="lead">A palimpsest is a page scraped clean and written over. This project treats colonial Calcutta the same way: Thacker's directories, Survey of India sheets, photos from Bourne &amp; Shepherd, and the memories of present-day shopkeepers are all layers over the same streets. We show each layer, and the gaps between them.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="n">1 166</div><div class="k">Firms parsed · 1915</div></div>
+    <div class="stat"><div class="n">513</div><div class="k">White Town firms</div></div>
+    <div class="stat"><div class="n">61</div><div class="k">Black Town firms</div></div>
+    <div class="stat"><div class="n">8.4×</div><div class="k">Archival bias</div></div>
   </div>
-  <div id="panel"><em>Click a building marker to see its occupants.</em></div>
-  <div id="ethics">
-    Data comes from Thacker's Indian Directory (1915, OCR+parse, human verified). The colonial archive mostly recorded European firms; most Indian residents and shops are missing. Matches marked <span class="pill fuzzy">fuzzy</span> or <span class="pill unmatched">unmatched</span> are candidates, not certain fact.
+
+  <h2>What this project does</h2>
+  <div class="cards">
+    <a class="card" href="map.html">
+      <h3>The interactive map</h3>
+      <p>MapLibre + year slider from 1850 to 1947. Click a pin to see occupants per year with a confidence pill for every fuzzy match.</p>
+      <span class="more">Open the map →</span>
+    </a>
+    <a class="card" href="firms.html">
+      <h3>The firm directory</h3>
+      <p>Every one of the 1 166 firms we lifted from Thacker's 1915, searchable by street, house or trade. Each row shows match confidence.</p>
+      <span class="more">Browse firms →</span>
+    </a>
+    <a class="card" href="argument.html">
+      <h3>The archival argument</h3>
+      <p>Why Clive Street has 109 entries and Kumartuli has none. A short data-story about what the colonial archive saw — and refused to see.</p>
+      <span class="more">Read the argument →</span>
+    </a>
+    <a class="card" href="method.html">
+      <h3>Pipeline &amp; method</h3>
+      <p>From archive.org page images through column-split Tesseract, a fault-tolerant parser, a street gazetteer, and human-in-the-loop verification.</p>
+      <span class="more">See the method →</span>
+    </a>
+    <a class="card" href="about.html#ethics">
+      <h3>Ethics &amp; consent</h3>
+      <p>CARE-style oral-history consent, right to withdraw, and a refusal to publish what speakers consider private — even if the tape caught it.</p>
+      <span class="more">Read our ethics →</span>
+    </a>
+    <a class="card" href="about.html#sources">
+      <h3>Sources</h3>
+      <p>Thacker's 1915 / 1920 / 1938, Bengal Directory 1884, Scott &amp; Co. 1849, Survey of India sheets, Scroll.in reportage — all in one page, cited.</p>
+      <span class="more">See sources →</span>
+    </a>
   </div>
-</div>
-<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
-<script>
-const map = new maplibregl.Map({
-  container: 'map',
-  style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
-  center: [88.355, 22.568], zoom: 13.2
-});
-const colorFor = t => ({White:'#a76a3a', Black:'#3b2a24', shared:'#7a8d6a'}[t]||'#666');
-let data;
-fetch('../data/geo/buildings_stub.geojson').then(r=>r.json()).then(j=>{
-  data = j;
-  map.on('load', () => {
-    map.addSource('bldgs', {type:'geojson', data:j});
-    map.addLayer({id:'bldgs', type:'circle', source:'bldgs',
-      paint:{'circle-radius':7,
-             'circle-color':['match',['get','town'],'White','#a76a3a','Black','#3b2a24','shared','#7a8d6a','#666'],
-             'circle-stroke-color':'#fff','circle-stroke-width':1.5}});
-    map.on('click','bldgs', e => show(e.features[0].properties));
-    map.on('mouseenter','bldgs',()=>map.getCanvas().style.cursor='pointer');
-    map.on('mouseleave','bldgs',()=>map.getCanvas().style.cursor='');
-  });
-});
-const slider = document.getElementById('slider'), yLbl = document.getElementById('y');
-slider.oninput = () => { yLbl.textContent = slider.value; if (currentFeat) show(currentFeat); };
-let currentFeat;
-function show(props){
-  currentFeat = props;
-  const occ = typeof props.occupants === 'string' ? JSON.parse(props.occupants) : props.occupants;
-  const years = Object.keys(occ).map(Number).sort();
-  // pick year nearest and not greater than slider
-  const y = +slider.value;
-  const nearest = years.filter(x=>x<=y).pop() ?? years[0];
-  let h = `<h1>${props.street} #${props.house_no}<span class="pill ${props.town}">${props.town} Town</span></h1>`;
-  h += `<div class="sub">Shown year: ${nearest} &middot; Available: ${years.join(', ')}</div>`;
-  for (const f of (occ[nearest]||[])){
-    h += `<div class="firm"><b>${f.firm}</b>`;
-    if (f.match) h += ` <span class="pill ${f.match}">${f.match}</span>`;
-    h += `<br><small>${f.trade||''}${f.note? ' - '+f.note:''}${f.source? ' (src: '+f.source+')':''}</small></div>`;
-  }
-  if (!(occ[nearest]||[]).length) h += `<p><em>No listing for this year.</em></p>`;
-  document.getElementById('panel').innerHTML = h;
-}
-</script>
+
+  <h2>Try one address</h2>
+  <div class="aside">
+    <strong>22 Chowringhee Road, 1915.</strong> Johnston &amp; Hoffmann — photographers to His Majesty the King — share the number with Rai Budree Das Bahadoor &amp; Sons, court jewellers. The directory lists both in the same paragraph. Click through to the map to see where the building would have stood.
+  </div>
+
+</main>
+
+<footer>
+  <div>Kolkata Palimpsest · built by Suvanwit Mandal, B.Tech CSE, IIIT Naya Raipur · 2026</div>
+  <div class="fine">Sources are listed in full on the <a href="about.html#sources">About</a> page. Images from the colonial era are in the public domain. The project's own data is CC-BY 4.0.</div>
+</footer>
+
 </body>
 </html>

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>The archival argument — Kolkata Palimpsest</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="top">
+  <a href="index.html" class="brand">Kolkata Palimpsest</a>
+  <nav class="top-nav">
+    <a href="index.html">Home</a>
+    <a href="map.html">Map</a>
+    <a href="firms.html">Firms</a>
+    <a href="argument.html" aria-current="page">Argument</a>
+    <a href="method.html">Method</a>
+    <a href="about.html">About</a>
+  </nav>
+</header>
+
+<main class="page">
+
+  <h1>What the archive saw, and what it did not.</h1>
+  <p class="lead">Thacker's Indian Directory listed 1 166 Calcutta firms in 1915. 513 were in <strong>White Town</strong>. Only 61 were on streets anyone today would place in <strong>Black Town</strong>. That ratio is not what the city looked like. It is what the colonial archive chose to look at.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="n">513</div><div class="k">White Town firms</div></div>
+    <div class="stat"><div class="n">61</div><div class="k">Black Town firms</div></div>
+    <div class="stat"><div class="n">592</div><div class="k">Shared streets</div></div>
+    <div class="stat"><div class="n">8.4×</div><div class="k">White : Black</div></div>
+  </div>
+
+  <h2>Firms per street, 1915</h2>
+  <p>The top 20 streets by number of listed firms. The colour of the bar is the part of the city it belonged to.</p>
+  <div id="chart"></div>
+
+  <h2>Zoom in on Black Town</h2>
+  <p>Chitpur Road was the spine of Black Town. The directory records none under that name — only variants that OCR'd to <em>Chitpore</em>. Kumartuli, home of the potter community, has no entries at all in the 1915 firm listing. Jorabagan has one.</p>
+  <div id="black-chart"></div>
+
+  <h2>What this means</h2>
+  <p>
+    The project does not try to pretend the colonial data covers the whole city. Where a listing exists, we read it carefully; where it does not, we say so in the map's sidebar. The <a href="method.html">Method</a> page describes the human-in-the-loop verification that turns OCR noise into evidence, and the <a href="about.html#ethics">Ethics</a> page sets out the consent and attribution rules for the fieldwork that will fill in the gap.
+  </p>
+  <div class="aside">
+    Some Black Town firms the archive does record — Biswas, Pulin Behari, plater &amp; engraver, 104 Kansaripara Road; Nundo Lall Mullick &amp; Bros, furniture, 40 Bowbazar Street, established 1863 — are among the most interesting rows in the whole file. They are small windows into a much larger business world the archive left unwritten.
+  </div>
+
+</main>
+
+<footer>
+  Data on this page is live from <code>data/extracted/firms_1915.csv</code>, parsed by this project's own OCR pipeline. See <a href="method.html">Method</a>.
+</footer>
+
+<script>
+const stats = {"total": 1166, "by_town": {"shared": 592, "White": 513, "Black": 61}, "top20": [{"street": "Clive Street", "town": "White", "n": 109}, {"street": "Radha Bazar", "town": "White", "n": 42}, {"street": "Dhurrumtollah Street", "town": "White", "n": 39}, {"street": "Canning Street", "town": "shared", "n": 36}, {"street": "Bowbazar", "town": "shared", "n": 35}, {"street": "Harrison Road", "town": "shared", "n": 28}, {"street": "Clive Row", "town": "White", "n": 27}, {"street": "Old Court", "town": "shared", "n": 25}, {"street": "Strand Road", "town": "White", "n": 24}, {"street": "Chowringhee Road", "town": "White", "n": 23}, {"street": "Bentinck Street", "town": "White", "n": 23}, {"street": "Mission Row", "town": "White", "n": 23}, {"street": "Swallow Lane", "town": "shared", "n": 22}, {"street": "Old China Bazar Street", "town": "shared", "n": 20}, {"street": "Mangoe Lane", "town": "White", "n": 19}, {"street": "Royal Exchange Place", "town": "White", "n": 18}, {"street": "Dalhousie Square", "town": "White", "n": 18}, {"street": "Cornwallis Street", "town": "Black", "n": 18}, {"street": "Ezra Street", "town": "White", "n": 18}, {"street": "Pollock Street", "town": "White", "n": 16}], "black": {"Cornwallis Street": 18, "Colootolla Street": 13, "Upper Chitpore Road": 12, "Lower Chitpore Road": 10, "Kansaripara Road": 3, "Amherst Street": 2, "Jorabagan Street": 1, "Kansareepara Road": 1, "Padma Nath Lane": 1}};
+function barRow(o, max){
+  const pct = (o.n / max * 100).toFixed(1);
+  return `<div class="bar-row ${o.town}"><div class="label">${o.street}</div><div class="bar"><span style="width:${pct}%"></span></div><div class="count">${o.n}</div></div>`;
+}
+(function(){
+  const top = stats.top20; const max = top[0].n;
+  document.getElementById('chart').innerHTML = top.map(o => barRow(o, max)).join('');
+  const b = Object.entries(stats.black).sort((a,b)=>b[1]-a[1]).map(([s,n])=>({street:s, town:'Black', n}));
+  const bmax = Math.max(...b.map(x=>x.n), 1);
+  document.getElementById('black-chart').innerHTML = b.map(o => barRow(o, bmax)).join('') ||
+    '<p><em>No entries found.</em></p>';
+})();
+</script>
+</body>
+</html>

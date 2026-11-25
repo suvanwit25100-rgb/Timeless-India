@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Map — Kolkata Palimpsest</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+  <style>
+    html, body { height: 100%; overflow: hidden; }
+    .map-wrap { position: absolute; top: 56px; right: 0; bottom: 0; left: 0; display: flex; }
+    #map { flex: 1; }
+    #side { width: 380px; background: var(--sepia-50); border-left: 1px solid var(--rule); padding: 1.2em 1.4em; overflow: auto; }
+    #side h2 { margin-top: 0; border: none; padding: 0; font-size: 1.3em; }
+    #side .sub { font-style: italic; color: var(--ink-soft); margin-bottom: 1em; font-size: .9em; }
+    .slider-row { display: flex; align-items: center; gap: .6em; margin: .5em 0 1.2em; padding: .9em 1em; background: var(--sepia-100); border: 1px solid var(--rule); }
+    .slider-row .year { font-family: 'Cormorant Garamond', serif; font-size: 1.9em; color: var(--rust); font-weight: 700; min-width: 2.5em; }
+    input[type=range] { flex: 1; accent-color: var(--sepia-700); }
+    .legend { font-size: .78em; color: var(--ink-soft); margin: .4em 0 1em; }
+    .legend .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; vertical-align: middle; margin: 0 4px 0 10px; }
+    .firm { margin: .5em 0 1em; padding: .6em .8em; background: #fff8e8; border-left: 3px solid var(--sepia-300); }
+    .firm b { display: block; font-family: 'Cormorant Garamond', serif; font-size: 1.1em; color: var(--sepia-700); }
+    .firm small { color: var(--ink-soft); }
+    .yearhead { font-family: 'Oswald', sans-serif; text-transform: uppercase; font-size: .72em; letter-spacing: .14em; color: var(--sepia-700); margin: 1.1em 0 .2em; }
+  </style>
+</head>
+<body>
+
+<header class="top">
+  <a href="index.html" class="brand">Kolkata Palimpsest</a>
+  <nav class="top-nav">
+    <a href="index.html">Home</a>
+    <a href="map.html" aria-current="page">Map</a>
+    <a href="firms.html">Firms</a>
+    <a href="argument.html">Argument</a>
+    <a href="method.html">Method</a>
+    <a href="about.html">About</a>
+  </nav>
+</header>
+
+<div class="map-wrap">
+  <div id="map"></div>
+  <aside id="side">
+    <h2>The interactive map</h2>
+    <div class="sub">Drag the slider. Click a pin.</div>
+    <div class="slider-row">
+      <span class="year" id="y">1915</span>
+      <input type="range" id="slider" min="1850" max="1947" step="1" value="1915">
+    </div>
+    <div class="legend">
+      Legend —
+      <span class="dot" style="background:var(--white-town)"></span>White Town
+      <span class="dot" style="background:var(--black-town)"></span>Black Town
+      <span class="dot" style="background:var(--shared)"></span>Shared
+    </div>
+    <div id="panel"><em>Click a building marker to see its occupants in the nearest listed year.</em></div>
+    <hr class="rule">
+    <div style="font-size:.8em; color:var(--ink-soft); font-style:italic;">
+      The colonial archive is uneven. White Town addresses were recorded house by house; most Indian residents and shops in the north of the city were not. Fuzzy and unmatched rows below are candidates, not certain fact.
+    </div>
+  </aside>
+</div>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script>
+const map = new maplibregl.Map({
+  container: 'map',
+  style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+  center: [88.355, 22.568], zoom: 13.2
+});
+let currentFeat;
+fetch('../data/geo/buildings.geojson').then(r=>r.json()).then(j=>{
+  map.on('load', () => {
+    map.addSource('bldgs', { type: 'geojson', data: j });
+    map.addLayer({ id: 'bldgs', type: 'circle', source: 'bldgs',
+      paint: {
+        'circle-radius': 8,
+        'circle-color': ['match', ['get','town'], 'White', '#a76a3a', 'Black', '#2d1f18', 'shared', '#7a8d6a', '#666'],
+        'circle-stroke-color': '#faf3e4', 'circle-stroke-width': 2
+      }});
+    map.on('click', 'bldgs', e => show(e.features[0].properties));
+    map.on('mouseenter', 'bldgs', () => map.getCanvas().style.cursor='pointer');
+    map.on('mouseleave', 'bldgs', () => map.getCanvas().style.cursor='');
+  });
+});
+const slider = document.getElementById('slider'), yLbl = document.getElementById('y');
+slider.oninput = () => { yLbl.textContent = slider.value; if (currentFeat) show(currentFeat); };
+function show(props){
+  currentFeat = props;
+  const occ = typeof props.occupants === 'string' ? JSON.parse(props.occupants) : props.occupants;
+  const years = Object.keys(occ).map(Number).sort();
+  const y = +slider.value;
+  const nearest = years.filter(x=>x<=y).pop() ?? years[0];
+  let h = `<h2 style="margin-top:0;border:none;padding:0;">${props.street} <span style="color:var(--rust)">#${props.house_no}</span></h2>`;
+  h += `<span class="pill ${props.town}">${props.town} Town</span>`;
+  h += `<div class="yearhead">Shown year ${nearest} · available ${years.join(', ')}</div>`;
+  const list = occ[nearest] || [];
+  if (!list.length) h += `<p><em>No listing for ${nearest}.</em></p>`;
+  for (const f of list) {
+    h += `<div class="firm"><b>${f.firm}</b>`;
+    if (f.match) h += ` <span class="pill ${f.match}">${f.match}</span>`;
+    const bits = [f.trade, f.note, f.source && 'src: '+f.source].filter(Boolean);
+    if (bits.length) h += `<br><small>${bits.join(' · ')}</small>`;
+    h += `</div>`;
+  }
+  document.getElementById('panel').innerHTML = h;
+}
+</script>
+</body>
+</html>

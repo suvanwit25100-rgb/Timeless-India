@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Method — Kolkata Palimpsest</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="top">
+  <a href="index.html" class="brand">Kolkata Palimpsest</a>
+  <nav class="top-nav">
+    <a href="index.html">Home</a>
+    <a href="map.html">Map</a>
+    <a href="firms.html">Firms</a>
+    <a href="argument.html">Argument</a>
+    <a href="method.html" aria-current="page">Method</a>
+    <a href="about.html">About</a>
+  </nav>
+</header>
+
+<main class="page">
+
+  <h1>From a page scan to a building pin</h1>
+  <p class="lead">The pipeline reads page images from archive.org, OCRs them by column, parses the lines into structured firm records, and joins each row to a street in the project gazetteer. Human-in-the-loop verification keeps the error visible.</p>
+
+  <h2>1. Source selection</h2>
+  <p>Thacker's Indian Directory 1915 (archive.org identifier <code>in.ernet.dli.2015.97228</code>) was the first candidate. Earlier editions (1897, 1884, 1849) list residents house by house; from 1915 onwards the directory is arranged alphabetically by firm, with the address inside the entry. Both shapes land in the same CSV format.</p>
+
+  <h2>2. Page fetch and column OCR</h2>
+  <p>Archive.org exposes per-page JPEGs at <code>/download/&lt;id&gt;/page/n&lt;N&gt;_w1800.jpg</code>. We cache each page locally, compute a gutter line from the column with lowest ink density, and OCR each half with Tesseract <code>--psm 4</code>.</p>
+  <pre>python3 scripts/ocr_directory_pages.py \
+   --id in.ernet.dli.2015.97228 \
+   --first 405 --last 620 \
+   --out data/ocr/firms_1915_full_own.txt</pre>
+  <p>This beat archive.org's own <code>_djvu.txt</code>, which silently dropped whole entries — Blackwood, Gupta Press, Guzdar and Grueber were all missing from it. Our column split recovers them.</p>
+
+  <h2>3. Firm parser</h2>
+  <p>Every paragraph that begins in all capitals is a firm candidate. <code>scripts/extract_firms.py</code> finds the first (house, street, suffix) triplet in each paragraph with a regex tolerant of common OCR slips (<code>sé</code>, <code>rrf</code>, <code>s!</code>), splits merged paragraphs at new all-capital firm starts, and normalises the street against a hand-written gazetteer with fuzzy matching.</p>
+  <p>Every row carries its source line number, raw OCR string, confidence tag and an <code>ocr_flag</code> that marks suspect names.</p>
+
+  <h2>4. Street gazetteer</h2>
+  <p><code>data/gazetteer.csv</code> holds 54 colonial-to-modern street mappings with OCR variants and a White Town / Black Town tag. It is the only place the project encodes judgment about which side of the archive a street belonged to, and it is meant to be read and argued with.</p>
+
+  <h2>5. Human-in-the-loop verification</h2>
+  <p><code>data/extracted/firms_1915_verified_sample.csv</code> holds 37 firms hand-checked against the scanned pages (n435, n420, n450, n480). <code>scripts/score_sample.py</code> reports:</p>
+  <ul>
+    <li><strong>Paragraphs parsed:</strong> 34 of 37 (92%)</li>
+    <li><strong>House number correct:</strong> 30 of 34</li>
+    <li><strong>Street correct:</strong> 30 of 34</li>
+  </ul>
+  <p>These numbers clear the project's pre-set threshold of ≥ 90% street / ≥ 80% house before anyone trusts a row in print.</p>
+
+  <h2>6. Joining to the map</h2>
+  <p><code>scripts/join_to_geojson.py</code> walks each row of a firm CSV, looks up the street through the gazetteer's variant list, and matches it against a hand-placed anchor in <code>data/geo/buildings_stub.geojson</code>. Anchored firms go into <code>data/geo/buildings.geojson</code>; the rest land in <code>data/geo/unanchored.csv</code>, which becomes the fieldwork and georeferencing TODO list.</p>
+
+  <h2>7. The web layer</h2>
+  <p>A static MapLibre viewer reads <code>buildings.geojson</code> and renders a year-slider popup for each pin. The sidebar states openly that fuzzy and unmatched rows are candidates, not fact — a confidence pill on every firm reminds the viewer of the same.</p>
+
+  <h2>Tech stack</h2>
+  <p>Python 3 (OpenCV, Tesseract 5, pytesseract, PyMuPDF, pandas, rapidfuzz, difflib), QGIS or Allmaps for georeferencing, MapLibre GL for the map, <code>&lt;model-viewer&gt;</code> for photogrammetry, Whisper for Bengali oral-history transcripts. Everything is installable with <code>pip install -r</code> a short list plus the system <code>tesseract-ocr</code> package.</p>
+
+</main>
+
+<footer>
+  All code and data are in the <a href="https://github.com/suvanwit25100-rgb/Timeless-India">Timeless-India</a> repository.
+</footer>
+
+</body>
+</html>
