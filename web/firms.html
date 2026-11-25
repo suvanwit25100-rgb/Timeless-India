@@ -4,24 +4,24 @@
   <meta charset="utf-8">
   <title>Firms — Kolkata Palimpsest</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="assets/style.css?v=3">
+  <link rel="stylesheet" href="assets/style.css?v=4">
   <style>
     .filters { display: flex; gap: 1em; flex-wrap: wrap; align-items: center; margin: 1em 0 1.5em; padding: 1em 1.2em; }
-    .count { font-family: var(--serif-sc); font-size: .8em; color: var(--ink-soft); letter-spacing: .18em; text-transform: uppercase; margin-left: auto; }
-    td.firm { font-family: var(--serif); font-size: 1.04em; color: var(--paper); }
+    .count { font: 600 .72em var(--sans); color: var(--brown); letter-spacing: .2em; text-transform: uppercase; margin-left: auto; }
+    td.firm { font-weight: 600; color: var(--green); }
     td.trade { color: var(--ink-soft); font-size: .9em; max-width: 36ch; }
     td.hn { font-variant-numeric: tabular-nums; }
     .tablewrap { overflow-x: auto; }
     .pagebar { display: flex; justify-content: center; align-items: center; gap: 1em; margin: 1.5em 0 0; }
-    .pagebar button { font-family: var(--serif-sc); font-size: .78em; letter-spacing: .2em; text-transform: uppercase; padding: .6em 1.3em; border: 1px solid var(--hair-strong); background: rgba(255,255,255,.06); color: var(--paper); cursor: pointer; }
-    .pagebar button:hover:not(:disabled) { background: var(--paper); color: #000; }
-    .pagebar button:disabled { opacity: .3; cursor: default; }
+    .pagebar button { font: 500 .78em var(--sans); letter-spacing: .2em; text-transform: uppercase; padding: .7em 1.4em; border: 1px solid var(--green); background: transparent; color: var(--green); cursor: pointer; }
+    .pagebar button:hover:not(:disabled) { background: var(--green); color: var(--paper); }
+    .pagebar button:disabled { opacity: .35; cursor: default; }
   </style>
 </head>
 <body>
 
 <header class="top">
-  <a href="index.html" class="brand">Kolkata Palimpsest</a>
+  <a href="index.html" class="brand"><b>Kolkata Palimpsest</b><span>কলকাতা</span></a>
   <nav class="top-nav">
     <a href="index.html">Home</a>
     <a href="map.html">Map</a>
@@ -36,7 +36,7 @@
   <h1 class="glass-title sm">The 1915 Firm Directory</h1>
   <p class="lead">Every firm we lifted from Thacker's Indian Directory, 1915 Calcutta section. Search by name, street, trade, or house number. Confidence pills show whether the street match is exact, a fuzzy OCR recovery, or still unmatched.</p>
 
-  <div class="filters glass">
+  <div class="filters">
     <input id="q" placeholder="Search firm, trade, street, house…" style="flex:1; min-width:260px;">
     <select id="town">
       <option value="">All towns</option>
@@ -62,7 +62,7 @@
 
   <div class="pagebar">
     <button id="prev">← Prev</button>
-    <span id="pageinfo" style="font-family:var(--serif-sc);font-size:.8em;letter-spacing:.16em;color:var(--ink-soft);"></span>
+    <span id="pageinfo" style="font:600 .74em var(--sans);letter-spacing:.18em;color:var(--brown);text-transform:uppercase;"></span>
     <button id="next">Next →</button>
   </div>
 </main>

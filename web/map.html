@@ -4,60 +4,52 @@
   <meta charset="utf-8">
   <title>Map — Kolkata Palimpsest</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="assets/style.css?v=3">
+  <link rel="stylesheet" href="assets/style.css?v=4">
   <style>
     html, body { height: 100%; overflow: hidden; }
-    .map-wrap { position: absolute; top: 58px; right: 0; bottom: 0; left: 0; display: flex; }
-
-    /* the map: the supplied vintage image, pannable and zoomable, pins laid on top */
-    #viewport { flex: 1; position: relative; overflow: hidden; background: #d9c8a0; cursor: grab; touch-action: none; }
+    .map-wrap { position: absolute; top: 57px; right: 0; bottom: 0; left: 0; display: flex; }
+    #viewport { flex: 1; position: relative; overflow: hidden; background: #e6d3a8; cursor: grab; touch-action: none; }
     #viewport.drag { cursor: grabbing; }
     #stage { position: absolute; left: 0; top: 0; transform-origin: 0 0; will-change: transform; }
     #stage img { display: block; width: 1060px; height: 1484px; max-width: none; user-select: none; -webkit-user-drag: none; }
 
-    .pin {
-      position: absolute; width: 20px; height: 20px; border-radius: 50%; cursor: pointer;
-      transform: translate(-50%, -50%) scale(var(--inv, 1));
-      border: 2.5px solid #1a1a1a; box-shadow: 0 0 0 2px rgba(255,255,255,.85), 0 3px 8px rgba(0,0,0,.45);
-      transition: box-shadow .15s;
-    }
-    .pin:hover, .pin.on { box-shadow: 0 0 0 3px #fff, 0 0 0 5px #1a1a1a, 0 4px 12px rgba(0,0,0,.5); z-index: 5; }
-    .pin.White  { background: #f7f3e8; }
-    .pin.Black  { background: #111; }
-    .pin.shared { background: repeating-linear-gradient(45deg, #777 0 3px, #bbb 3px 6px); }
-    .pin .tip {
-      display: none; position: absolute; left: 50%; bottom: 150%; transform: translateX(-50%);
-      white-space: nowrap; font: 600 12px/1 'Playfair Display', Georgia, serif; letter-spacing: .04em;
-      background: #111; color: #fff; padding: 5px 8px;
-    }
+    .pin { position: absolute; width: 22px; height: 22px; border-radius: 50%; cursor: pointer;
+      transform: translate(-50%, -50%) scale(var(--inv, 1)); border: 3px solid #faf2e1;
+      box-shadow: 0 0 0 1.5px rgba(42,34,22,.55), 0 4px 10px rgba(42,34,22,.45); transition: box-shadow .15s; }
+    .pin:hover, .pin.on { box-shadow: 0 0 0 2px #2b3a1f, 0 0 0 6px rgba(250,242,225,.9), 0 6px 14px rgba(42,34,22,.5); z-index: 5; }
+    .pin.White  { background: var(--terra); }
+    .pin.Black  { background: var(--green); }
+    .pin.shared { background: var(--gold); }
+    .pin .tip { display: none; position: absolute; left: 50%; bottom: 155%; transform: translateX(-50%); white-space: nowrap;
+      font: 500 12px/1 var(--sans); letter-spacing: .08em; background: var(--green); color: var(--paper); padding: 6px 9px; }
     .pin:hover .tip { display: block; }
 
     .zoom { position: absolute; right: 16px; top: 16px; display: flex; flex-direction: column; gap: 6px; z-index: 10; }
-    .zoom button { width: 38px; height: 38px; font: 700 20px var(--serif); color: var(--paper); cursor: pointer;
-      background: rgba(10,10,10,.78); border: 1px solid var(--hair-strong); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
-    .zoom button:hover { background: var(--paper); color: #000; }
-    .credit { position: absolute; left: 12px; bottom: 10px; z-index: 10; font-size: 12px; color: #2a2118; background: rgba(247,243,232,.85); padding: 3px 8px; }
+    .zoom button { width: 40px; height: 40px; font: 400 24px var(--display); color: var(--green); cursor: pointer;
+      background: rgba(250,242,225,.94); border: 1px solid var(--hair-2); }
+    .zoom button:hover { background: var(--green); color: var(--paper); }
+    .credit { position: absolute; left: 12px; bottom: 10px; z-index: 10; font: 500 11px var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--green); background: rgba(250,242,225,.92); padding: 4px 9px; }
 
-    #side { width: 390px; padding: 1.4em 1.5em; overflow: auto; border-left: 1px solid var(--hair);
-      background: linear-gradient(180deg, rgba(18,18,18,.88), rgba(8,8,8,.94)); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
-    #side h2 { margin: 0 0 .2em; font-size: 1.1em; padding: .4em 0; }
-    #side .sub { font-style: italic; color: var(--ink-soft); margin-bottom: 1em; font-size: .92em; text-align: center; }
-    .slider-row { display: flex; align-items: center; gap: .8em; margin: .5em 0 1.2em; padding: .8em 1em; }
-    .slider-row .year { font-family: var(--serif); font-size: 2.1em; font-weight: 900; min-width: 2.4em; color: var(--paper); }
+    #side { width: 400px; padding: 1.5em 1.6em; overflow: auto; background: var(--paper); border-left: 4px solid var(--gold); }
+    #side h2 { margin: 0 0 .1em; font-size: 1.9em; padding-bottom: .3em; }
+    #side .sub { color: var(--ink-soft); margin-bottom: 1em; font-size: .95em; font-style: italic; }
+    .slider-row { display: flex; align-items: center; gap: .9em; margin: .5em 0 1.1em; padding: .7em 1em; }
+    .slider-row .year { font-family: var(--display); font-size: 2.6em; line-height: 1; min-width: 2.2em; color: var(--terra); letter-spacing: .03em; }
     input[type=range] { flex: 1; }
-    .legend { font-size: .78em; color: var(--ink-soft); margin: .4em 0 1em; font-family: var(--serif-sc); letter-spacing: .12em; text-transform: uppercase; display: flex; gap: 1.1em; flex-wrap: wrap; }
-    .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 50%; vertical-align: middle; margin-right: 6px; border: 1.5px solid #fff; }
-    .firm { margin: .5em 0 1em; padding: .65em .9em; background: rgba(255,255,255,.06); border-left: 2px solid var(--paper); }
-    .firm b { display: block; font-family: var(--serif); font-size: 1.08em; color: var(--paper); }
+    .legend { font: 500 .72em var(--sans); letter-spacing: .16em; text-transform: uppercase; color: var(--ink-soft); margin: .4em 0 1.1em; display: flex; gap: 1.2em; flex-wrap: wrap; }
+    .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 50%; vertical-align: middle; margin-right: 7px; border: 2px solid var(--card); box-shadow: 0 0 0 1px rgba(42,34,22,.5); }
+    #panel > em { color: var(--ink-soft); }
+    .firm { margin: .5em 0 .9em; padding: .7em .95em; background: var(--card); border: 1px solid var(--hair); border-left: 3px solid var(--gold); }
+    .firm b { display: block; font-family: var(--serif); font-weight: 600; font-size: 1.05em; color: var(--green); }
     .firm small { color: var(--ink-soft); }
-    .yearhead { font-family: var(--serif-sc); letter-spacing: .16em; text-transform: uppercase; font-size: .72em; color: var(--ink-soft); margin: 1.1em 0 .3em; }
-    @media (max-width: 760px) { .map-wrap { flex-direction: column; top: 96px; } #side { width: 100%; max-height: 45vh; } }
+    .yearhead { font: 600 .7em var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--brown); margin: 1.1em 0 .4em; }
+    @media (max-width: 800px) { .map-wrap { flex-direction: column; top: 92px; } #side { width: 100%; max-height: 45vh; } }
   </style>
 </head>
 <body>
 
 <header class="top">
-  <a href="index.html" class="brand">Kolkata Palimpsest</a>
+  <a href="index.html" class="brand"><b>Kolkata Palimpsest</b><span>কলকাতা</span></a>
   <nav class="top-nav">
     <a href="index.html">Home</a>
     <a href="map.html" aria-current="page">Map</a>
@@ -82,20 +74,20 @@
   </div>
 
   <aside id="side">
-    <h2>The Interactive Map</h2>
+    <h2>The Map</h2>
     <div class="sub">Drag the slider. Click a pin.</div>
     <div class="slider-row">
       <span class="year" id="y">1915</span>
       <input type="range" id="slider" min="1850" max="1947" step="1" value="1915">
     </div>
     <div class="legend">
-      <span><i style="background:#f7f3e8"></i>White Town</span>
-      <span><i style="background:#111"></i>Black Town</span>
-      <span><i style="background:repeating-linear-gradient(45deg,#777 0 3px,#bbb 3px 6px)"></i>Shared</span>
+      <span><i style="background:var(--terra)"></i>White Town</span>
+      <span><i style="background:var(--green)"></i>Black Town</span>
+      <span><i style="background:var(--gold)"></i>Shared</span>
     </div>
     <div id="panel"><em>Click a pin to see its occupants in the nearest listed year.</em></div>
     <hr class="rule">
-    <div style="font-size:.82em; color:var(--ink-soft); font-style:italic;">
+    <div style="font-size:.84em; color:var(--ink-soft); font-style:italic;">
       The colonial archive is uneven. White Town addresses were recorded house by house; most Indian residents and shops in the north of the city were not. Fuzzy and unmatched rows are candidates, not certain fact. The base map is a modern street plan, not a colonial survey; pin positions are approximate until Simms' 1847–49 survey is georeferenced.
     </div>
   </aside>
@@ -178,7 +170,7 @@ function show(props) {
   const years = Object.keys(occ).map(Number).sort();
   const y = +slider.value;
   const nearest = years.filter(x => x <= y).pop() ?? years[0];
-  let h = `<h2 style="margin:0 0 .5em;">${props.street} · No. ${props.house_no}</h2>`;
+  let h = `<h3 style="margin:.2em 0 .5em;font-family:var(--display);font-weight:400;font-size:1.9em;letter-spacing:.05em;color:var(--green)">${props.street} · No. ${props.house_no}</h3>`;
   h += `<span class="pill ${props.town}">${props.town} Town</span>`;
   h += `<div class="yearhead">Shown year ${nearest} · available ${years.join(', ')}</div>`;
   const list = occ[nearest] || [];
