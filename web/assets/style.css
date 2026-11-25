@@ -28,7 +28,7 @@ body {
 /* fixed, softly blurred monochrome backdrop taken from the hero */
 body::before {
   content: ""; position: fixed; inset: -6%; z-index: -2;
-  background: url('kolkata-hero.webp') center/cover no-repeat;
+  background: url('kolkata-hero.webp?v=3') center/cover no-repeat;
   filter: grayscale(1) blur(90px) brightness(.3) contrast(1.05);
   transform: scale(1.25);
 }
