@@ -11,6 +11,6 @@
 9. **Black Town slide**: Kansaripara Road 104, Kumartuli, Chitpur. Fieldwork photos and (if ready) a photogrammetry model-viewer embed.
 10. **Ethics**: short form; CARE; withdrawal; translator.
 11. **What is next**: Omeka-S, Bengali NER, crowdsourced Black Town pins.
-12. **Credits + sources**: FIBIS, archive.org, Scroll.in piece, QGIS, Tesseract, MapLibre.
+12. **Credits + sources**: FIBIS, archive.org, Scroll.in piece, QGIS, Tesseract.
 
 Speak time ~12 minutes; leave 8 for questions. Keep every slide to one sentence and one picture.

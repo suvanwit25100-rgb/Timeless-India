@@ -31,7 +31,7 @@ Then open http://127.0.0.1:8765/web/ and click a pin. The year slider shows the 
 | `data/extracted/firms_1915_verified_sample.csv` | Hand-checked ground truth for parser accuracy. |
 | `docs/ethics_and_consent.md` | Oral-history consent form; CARE note. |
 | `docs/report_outline.md`, `docs/viva_deck_outline.md` | Report and viva plans. |
-| `web/index.html`, `web/README.md` | The MapLibre viewer. |
+| `web/index.html`, `web/README.md` | The static site: hero page, vintage-map viewer, firm directory, argument, method, about. |
 
 ## Current status (2026-11-25)
 

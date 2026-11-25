@@ -56,10 +56,10 @@
   <p><code>scripts/join_to_geojson.py</code> walks each row of a firm CSV, looks up the street through the gazetteer's variant list, and matches it against a hand-placed anchor in <code>data/geo/buildings_stub.geojson</code>. Anchored firms go into <code>data/geo/buildings.geojson</code>; the rest land in <code>data/geo/unanchored.csv</code>, which becomes the fieldwork and georeferencing TODO list.</p>
 
   <h2>7. The web layer</h2>
-  <p>A static MapLibre viewer reads <code>buildings.geojson</code> and renders a year-slider popup for each pin. The sidebar states openly that fuzzy and unmatched rows are candidates, not fact — a confidence pill on every firm reminds the viewer of the same.</p>
+  <p>A static viewer lays the pins from <code>buildings.geojson</code> over a vintage-style street map of Kolkata (a pannable, zoomable image calibrated to latitude and longitude from two landmarks) and shows a year-slider panel for each pin. The sidebar states openly that fuzzy and unmatched rows are candidates, not fact — a confidence pill on every firm reminds the viewer of the same.</p>
 
   <h2>Tech stack</h2>
-  <p>Python 3 (OpenCV, Tesseract 5, pytesseract, PyMuPDF, pandas, rapidfuzz, difflib), QGIS or Allmaps for georeferencing, MapLibre GL for the map, <code>&lt;model-viewer&gt;</code> for photogrammetry, Whisper for Bengali oral-history transcripts. Everything is installable with <code>pip install -r</code> a short list plus the system <code>tesseract-ocr</code> package.</p>
+  <p>Python 3 (OpenCV, Tesseract 5, pytesseract, PyMuPDF, pandas, rapidfuzz, difflib), QGIS or Allmaps for georeferencing, a plain-JavaScript pan-and-zoom image map, <code>&lt;model-viewer&gt;</code> for photogrammetry, Whisper for Bengali oral-history transcripts. Everything is installable with <code>pip install -r</code> a short list plus the system <code>tesseract-ocr</code> package.</p>
 
 </main>
 

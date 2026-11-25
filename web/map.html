@@ -5,21 +5,48 @@
   <title>Map — Kolkata Palimpsest</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="assets/style.css?v=3">
-  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
   <style>
     html, body { height: 100%; overflow: hidden; }
     .map-wrap { position: absolute; top: 58px; right: 0; bottom: 0; left: 0; display: flex; }
-    #map { flex: 1; }
-    #map canvas { filter: grayscale(1) contrast(1.05); }
+
+    /* the map: the supplied vintage image, pannable and zoomable, pins laid on top */
+    #viewport { flex: 1; position: relative; overflow: hidden; background: #d9c8a0; cursor: grab; touch-action: none; }
+    #viewport.drag { cursor: grabbing; }
+    #stage { position: absolute; left: 0; top: 0; transform-origin: 0 0; will-change: transform; }
+    #stage img { display: block; width: 1060px; height: 1484px; max-width: none; user-select: none; -webkit-user-drag: none; }
+
+    .pin {
+      position: absolute; width: 20px; height: 20px; border-radius: 50%; cursor: pointer;
+      transform: translate(-50%, -50%) scale(var(--inv, 1));
+      border: 2.5px solid #1a1a1a; box-shadow: 0 0 0 2px rgba(255,255,255,.85), 0 3px 8px rgba(0,0,0,.45);
+      transition: box-shadow .15s;
+    }
+    .pin:hover, .pin.on { box-shadow: 0 0 0 3px #fff, 0 0 0 5px #1a1a1a, 0 4px 12px rgba(0,0,0,.5); z-index: 5; }
+    .pin.White  { background: #f7f3e8; }
+    .pin.Black  { background: #111; }
+    .pin.shared { background: repeating-linear-gradient(45deg, #777 0 3px, #bbb 3px 6px); }
+    .pin .tip {
+      display: none; position: absolute; left: 50%; bottom: 150%; transform: translateX(-50%);
+      white-space: nowrap; font: 600 12px/1 'Playfair Display', Georgia, serif; letter-spacing: .04em;
+      background: #111; color: #fff; padding: 5px 8px;
+    }
+    .pin:hover .tip { display: block; }
+
+    .zoom { position: absolute; right: 16px; top: 16px; display: flex; flex-direction: column; gap: 6px; z-index: 10; }
+    .zoom button { width: 38px; height: 38px; font: 700 20px var(--serif); color: var(--paper); cursor: pointer;
+      background: rgba(10,10,10,.78); border: 1px solid var(--hair-strong); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+    .zoom button:hover { background: var(--paper); color: #000; }
+    .credit { position: absolute; left: 12px; bottom: 10px; z-index: 10; font-size: 12px; color: #2a2118; background: rgba(247,243,232,.85); padding: 3px 8px; }
+
     #side { width: 390px; padding: 1.4em 1.5em; overflow: auto; border-left: 1px solid var(--hair);
-      background: linear-gradient(180deg, rgba(18,18,18,.82), rgba(8,8,8,.9)); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
+      background: linear-gradient(180deg, rgba(18,18,18,.88), rgba(8,8,8,.94)); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
     #side h2 { margin: 0 0 .2em; font-size: 1.1em; padding: .4em 0; }
     #side .sub { font-style: italic; color: var(--ink-soft); margin-bottom: 1em; font-size: .92em; text-align: center; }
     .slider-row { display: flex; align-items: center; gap: .8em; margin: .5em 0 1.2em; padding: .8em 1em; }
     .slider-row .year { font-family: var(--serif); font-size: 2.1em; font-weight: 900; min-width: 2.4em; color: var(--paper); }
     input[type=range] { flex: 1; }
-    .legend { font-size: .78em; color: var(--ink-soft); margin: .4em 0 1em; font-family: var(--serif-sc); letter-spacing: .12em; text-transform: uppercase; }
-    .legend .dot { display: inline-block; width: 11px; height: 11px; border-radius: 50%; vertical-align: middle; margin: 0 5px 0 12px; border: 1.5px solid #fff; }
+    .legend { font-size: .78em; color: var(--ink-soft); margin: .4em 0 1em; font-family: var(--serif-sc); letter-spacing: .12em; text-transform: uppercase; display: flex; gap: 1.1em; flex-wrap: wrap; }
+    .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 50%; vertical-align: middle; margin-right: 6px; border: 1.5px solid #fff; }
     .firm { margin: .5em 0 1em; padding: .65em .9em; background: rgba(255,255,255,.06); border-left: 2px solid var(--paper); }
     .firm b { display: block; font-family: var(--serif); font-size: 1.08em; color: var(--paper); }
     .firm small { color: var(--ink-soft); }
@@ -42,58 +69,115 @@
 </header>
 
 <div class="map-wrap">
-  <div id="map"></div>
+  <div id="viewport">
+    <div id="stage">
+      <img id="mapimg" src="assets/kolkata-map.webp?v=1" alt="Vintage-style map of Kolkata and the Hooghly river" draggable="false">
+    </div>
+    <div class="zoom">
+      <button id="zin" aria-label="Zoom in">+</button>
+      <button id="zout" aria-label="Zoom out">−</button>
+      <button id="zreset" aria-label="Reset view" style="font-size:13px">⌂</button>
+    </div>
+    <div class="credit">Stylised modern street map · drag to pan, scroll to zoom</div>
+  </div>
+
   <aside id="side">
-    <h2>The interactive map</h2>
+    <h2>The Interactive Map</h2>
     <div class="sub">Drag the slider. Click a pin.</div>
     <div class="slider-row">
       <span class="year" id="y">1915</span>
       <input type="range" id="slider" min="1850" max="1947" step="1" value="1915">
     </div>
     <div class="legend">
-      Legend —
-      <span class="dot" style="background:#f2f2f0"></span>White Town
-      <span class="dot" style="background:#000"></span>Black Town
-      <span class="dot" style="background:#8a8a87"></span>Shared
+      <span><i style="background:#f7f3e8"></i>White Town</span>
+      <span><i style="background:#111"></i>Black Town</span>
+      <span><i style="background:repeating-linear-gradient(45deg,#777 0 3px,#bbb 3px 6px)"></i>Shared</span>
     </div>
-    <div id="panel"><em>Click a building marker to see its occupants in the nearest listed year.</em></div>
+    <div id="panel"><em>Click a pin to see its occupants in the nearest listed year.</em></div>
     <hr class="rule">
     <div style="font-size:.82em; color:var(--ink-soft); font-style:italic;">
-      The colonial archive is uneven. White Town addresses were recorded house by house; most Indian residents and shops in the north of the city were not. Fuzzy and unmatched rows below are candidates, not certain fact.
+      The colonial archive is uneven. White Town addresses were recorded house by house; most Indian residents and shops in the north of the city were not. Fuzzy and unmatched rows are candidates, not certain fact. The base map is a modern street plan, not a colonial survey; pin positions are approximate until Simms' 1847–49 survey is georeferenced.
     </div>
   </aside>
 </div>
 
-<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script>
-const map = new maplibregl.Map({
-  container: 'map',
-  style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-  center: [88.355, 22.568], zoom: 13.2
-});
-let currentFeat;
-fetch('../data/geo/buildings.geojson').then(r=>r.json()).then(j=>{
-  map.on('load', () => {
-    map.addSource('bldgs', { type: 'geojson', data: j });
-    map.addLayer({ id: 'bldgs', type: 'circle', source: 'bldgs',
-      paint: {
-        'circle-radius': 8,
-        'circle-color': ['match', ['get','town'], 'White', '#f2f2f0', 'Black', '#000000', 'shared', '#8a8a87', '#666'],
-        'circle-stroke-color': '#ffffff', 'circle-stroke-width': 2
-      }});
-    map.on('click', 'bldgs', e => show(e.features[0].properties));
-    map.on('mouseenter', 'bldgs', () => map.getCanvas().style.cursor='pointer');
-    map.on('mouseleave', 'bldgs', () => map.getCanvas().style.cursor='');
+/* ---- calibration: image pixel <-> lat/lon (approximate, adjust here) ----
+   Two anchors read off the image: the Salt Lake grid and the Hooghly narrows at Howrah Bridge.
+   Mercator: px/deg lon is constant; px/deg lat = KX / cos(lat). */
+const REF = { px: 640, py: 830, lon: 88.415, lat: 22.585 };
+const KX  = 3380;
+const KY  = KX / Math.cos(22.58 * Math.PI / 180);
+const toPx = (lon, lat) => [ REF.px + (lon - REF.lon) * KX, REF.py + (REF.lat - lat) * KY ];
+
+const vp = document.getElementById('viewport'), stage = document.getElementById('stage');
+const IMG_W = 1060, IMG_H = 1484;
+let S = 1.7, TX = 0, TY = 0;
+const MIN = 0.55, MAX = 5;
+
+function apply() {
+  stage.style.transform = `translate(${TX}px,${TY}px) scale(${S})`;
+  stage.style.setProperty('--inv', 1 / S);
+}
+function clamp() {
+  const w = vp.clientWidth, h = vp.clientHeight;
+  TX = Math.min(w * .5, Math.max(w * .5 - IMG_W * S, TX));
+  TY = Math.min(h * .5, Math.max(h * .5 - IMG_H * S, TY));
+}
+function centerOn(lon, lat, scale) {
+  S = scale; const [px, py] = toPx(lon, lat);
+  TX = vp.clientWidth / 2 - px * S; TY = vp.clientHeight / 2 - py * S; clamp(); apply();
+}
+function zoomAt(cx, cy, f) {
+  const n = Math.min(MAX, Math.max(MIN, S * f)); f = n / S;
+  TX = cx - (cx - TX) * f; TY = cy - (cy - TY) * f; S = n; clamp(); apply();
+}
+const home = () => centerOn(88.357, 22.560, 2.2);
+
+vp.addEventListener('wheel', e => { e.preventDefault(); const r = vp.getBoundingClientRect();
+  zoomAt(e.clientX - r.left, e.clientY - r.top, e.deltaY < 0 ? 1.18 : 1 / 1.18); }, { passive: false });
+let drag = null;
+vp.addEventListener('pointerdown', e => { if (e.target.closest('.pin,.zoom')) return;
+  drag = { x: e.clientX, y: e.clientY, tx: TX, ty: TY }; vp.classList.add('drag'); vp.setPointerCapture(e.pointerId); });
+vp.addEventListener('pointermove', e => { if (!drag) return;
+  TX = drag.tx + e.clientX - drag.x; TY = drag.ty + e.clientY - drag.y; clamp(); apply(); });
+const end = () => { drag = null; vp.classList.remove('drag'); };
+vp.addEventListener('pointerup', end); vp.addEventListener('pointercancel', end);
+const mid = () => [vp.clientWidth / 2, vp.clientHeight / 2];
+document.getElementById('zin').onclick = () => zoomAt(...mid(), 1.4);
+document.getElementById('zout').onclick = () => zoomAt(...mid(), 1 / 1.4);
+document.getElementById('zreset').onclick = home;
+let touched = false;
+['wheel', 'pointerdown'].forEach(t => vp.addEventListener(t, () => { touched = true; }, { passive: true }));
+document.querySelectorAll('.zoom button').forEach(b => b.addEventListener('click', () => { touched = true; }));
+window.addEventListener('resize', () => { if (!touched) home(); else { clamp(); apply(); } });
+if (window.ResizeObserver) new ResizeObserver(() => { if (!touched) home(); }).observe(vp);
+
+/* ---- pins from buildings.geojson ---- */
+let currentFeat, pinEls = [];
+fetch('../data/geo/buildings.geojson?v=' + Date.now()).then(r => r.json()).then(j => {
+  j.features.forEach(f => {
+    const [lon, lat] = f.geometry.coordinates, [px, py] = toPx(lon, lat);
+    const p = f.properties, el = document.createElement('div');
+    el.className = 'pin ' + p.town; el.style.left = px + 'px'; el.style.top = py + 'px';
+    el.innerHTML = `<span class="tip">${p.street} · ${p.house_no}</span>`;
+    el.addEventListener('click', ev => { ev.stopPropagation();
+      pinEls.forEach(x => x.classList.remove('on')); el.classList.add('on'); show(p); });
+    stage.appendChild(el); pinEls.push(el);
   });
 });
+const img = document.getElementById('mapimg');
+(img.complete ? Promise.resolve() : new Promise(r => img.onload = r)).then(home);
+
+/* ---- year slider + panel ---- */
 const slider = document.getElementById('slider'), yLbl = document.getElementById('y');
 slider.oninput = () => { yLbl.textContent = slider.value; if (currentFeat) show(currentFeat); };
-function show(props){
+function show(props) {
   currentFeat = props;
   const occ = typeof props.occupants === 'string' ? JSON.parse(props.occupants) : props.occupants;
   const years = Object.keys(occ).map(Number).sort();
   const y = +slider.value;
-  const nearest = years.filter(x=>x<=y).pop() ?? years[0];
+  const nearest = years.filter(x => x <= y).pop() ?? years[0];
   let h = `<h2 style="margin:0 0 .5em;">${props.street} · No. ${props.house_no}</h2>`;
   h += `<span class="pill ${props.town}">${props.town} Town</span>`;
   h += `<div class="yearhead">Shown year ${nearest} · available ${years.join(', ')}</div>`;
@@ -102,7 +186,7 @@ function show(props){
   for (const f of list) {
     h += `<div class="firm"><b>${f.firm}</b>`;
     if (f.match) h += ` <span class="pill ${f.match}">${f.match}</span>`;
-    const bits = [f.trade, f.note, f.source && 'src: '+f.source].filter(Boolean);
+    const bits = [f.trade, f.note, f.source && 'src: ' + f.source].filter(Boolean);
     if (bits.length) h += `<br><small>${bits.join(' · ')}</small>`;
     h += `</div>`;
   }

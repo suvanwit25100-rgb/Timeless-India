@@ -1,6 +1,6 @@
 # Kolkata Palimpsest - web prototype
 
-A single-file MapLibre viewer with a year slider (1850-1947). Click any pin to see the firms listed at that address in the nearest listed year.
+A static viewer over the vintage Kolkata map image (assets/kolkata-map.webp), with pins placed by a two-point lat/lon calibration in map.html, with a year slider (1850-1947). Click any pin to see the firms listed at that address in the nearest listed year.
 
 Current data: 9 hand-placed anchor points in `data/geo/buildings_stub.geojson`, drawn from the 1915 Thacker's parse and one 1897 reference (Whiteaway, Laidlaw at 4-7 Chowringhee Road, from the Scroll.in article). Markers are coloured by White Town / Black Town / shared.
 
